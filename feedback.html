@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eBill System Feedback Form</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 50px;
+            display: none;
+        }
+        .form-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        .form-header {
+            margin-bottom: 30px;
+        }
+        .footer {
+            background-color: #343a40;
+            padding: 10px 0;
+            text-align: center;
+            color: white;
+        }
+        .table-container {
+            margin-top: 30px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <img src="/image/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+        <a class="navbar-brand" href="#">Electricity Bill</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="homepage.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="paymenthistory.html">Payment History</a></li>
+                <li class="nav-item active"><a class="nav-link" href="feedback.html">Feedback Form</a></li>
+                <li class="nav-item"><a class="nav-link" href="Paymentpage.html">Payment</a></li>
+                <li class="nav-item"><a class="nav-link" href="newconnection.html">New Connection</a></li>
+                <li class="nav-item">
+                    <button class="btn btn-secondary" title="Logout" id="logoutBtn"><img src="image/logout.png" width="30" height="30" alt="">Logout</button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-3 pt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="form-container">
+                    <h2 class="text-center form-header">Feedback Form for eBill System</h2>
+                    <form id="feedbackForm">
+                        <fieldset class="form-group">
+                            <legend>Personal Information:</legend>
+                            <div class="form-group">
+                                <label for="name">Name:</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number:</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" required>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="form-group">
+                            <legend>Bill Information:</legend>
+                            <div class="form-group">
+                                <label for="billNumber">Bill Number:</label>
+                                <input type="text" class="form-control" id="billNumber" name="billNumber" required>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="form-group">
+                            <legend>Feedback/Complaint Type:</legend>
+                            <div class="form-group">
+                                <label for="feedbackType">Please select one:</label>
+                                <select class="form-control" id="feedbackType" name="feedbackType" required>
+                                    <option value="">Select feedback type</option>
+                                    <option value="billing issue">Billing issue</option>
+                                    <option value="connection issue">Connection issue</option>
+                                    <option value="payment issue">Payment issue</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="form-group">
+                            <legend>Description:</legend>
+                            <div class="form-group">
+                                <label for="description">Please describe your feedback or complaint in detail:</label>
+                                <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+                            </div>
+                        </fieldset>
+
+                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid table-container" id="tableContainer">
+        <h2 class="text-center">Feedback Submissions</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Bill Number</th>
+                    <th>Feedback Type</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="feedbackTableBody">
+                <!-- Feedback data will be inserted here -->
+            </tbody>
+        </table>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 Electricity Bill App. All rights reserved.</p>
+    </footer>
+
+    <script src="sessioncheck.js"></script>
+    <script src="sessionclose.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.body.style.display = "block";
+
+            const feedbackForm = document.getElementById("feedbackForm");
+            const feedbackTableBody = document.getElementById("feedbackTableBody");
+            const tableContainer = document.getElementById("tableContainer");
+
+            function displayFeedbackTable() {
+                const feedbackData = JSON.parse(localStorage.getItem("feedbackData")) || [];
+                feedbackTableBody.innerHTML = "";
+
+                if (feedbackData.length === 0) {
+                    tableContainer.style.display = "none";
+                    return;
+                }
+
+                feedbackData.forEach((feedback, index) => {
+                    const row = document.createElement("tr");
+
+                    row.innerHTML = `
+                        <td>${feedback.name}</td>
+                        <td>${feedback.email}</td>
+                        <td>${feedback.phone}</td>
+                        <td>${feedback.billNumber}</td>
+                        <td>${feedback.feedbackType}</td>
+                        <td>${feedback.description}</td>
+                        <td>${feedback.status}</td>
+                    `;
+                    feedbackTableBody.appendChild(row);
+                });
+
+                tableContainer.style.display = "block";
+
+                document.querySelectorAll(".status-select").forEach(select => {
+                    select.addEventListener("change", function () {
+                        const index = this.dataset.index;
+                        feedbackData[index].status = this.value;
+                        localStorage.setItem("feedbackData", JSON.stringify(feedbackData));
+                    });
+                });
+            }
+
+            feedbackForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                const feedback = {
+                    name: document.getElementById("name").value,
+                    email: document.getElementById("email").value,
+                    phone: document.getElementById("phone").value,
+                    billNumber: document.getElementById("billNumber").value,
+                    feedbackType: document.getElementById("feedbackType").value,
+                    description: document.getElementById("description").value,
+                    status: "new"
+                };
+
+                const feedbackData = JSON.parse(localStorage.getItem("feedbackData")) || [];
+                feedbackData.push(feedback);
+                localStorage.setItem("feedbackData", JSON.stringify(feedbackData));
+
+                displayFeedbackTable();
+                feedbackForm.reset();
+            });
+
+            displayFeedbackTable();
+        });
+    </script>
+</body>
+</html>

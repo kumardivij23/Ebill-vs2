@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page</title>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        display: none;
+      }
+      .footer {
+        background-color: #343a40;
+        padding: 10px 0;
+        text-align: center;
+        color: white;
+      }
+      .form-container {
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px; /* Add bottom margin */
+    }
+    .form-header {
+      margin-bottom: 30px;
+    }
+    </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Check for existing application data in local storage
+        const existingApplication = localStorage.getItem(
+          "lightConnectionFormData"
+        );
+        const applicationContainer = document.getElementById(
+          "applicationContainer"
+        );
+        const submitBtn = document.getElementById("submitbtn")
+
+        if (existingApplication) {
+          // Display a response message if application data exists
+          applicationContainer.innerHTML = `
+            <div class="alert alert-success" role="alert">
+              Your connection application has already been submitted. Can't apply for new connection
+            </div>
+          `;
+          submitBtn.disabled = true;
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <img src="/image/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+      <a class="navbar-brand" href="#">Electricity Bill</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="homepage.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="paymenthistory.html">Payment History</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="feedback.html">Feedback Form</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="Paymentpage.html">Payment</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="#">New Connection</a>
+          </li>
+          <li class="nav-item">
+            <button class="btn btn-secondary" title="Logout" id="logoutBtn"><img src="image/logout.png" width="30" height="30" alt="">Logout</button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container mt-3 pt-5" id="applicationContainer">
+      <!-- The form or response message will be injected here by JavaScript -->
+    </div>
+    <div class="container mt-3 pt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="form-container">
+            <h2 class="text-center form-header">
+              New Light Connection Application
+            </h2>
+            <form id="lightConnectionForm">
+              <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="fullName"
+                  placeholder="Enter your full name"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="email">Email address</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  placeholder="Enter your email"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input
+                  type="tel"
+                  class="form-control"
+                  id="phone"
+                  placeholder="Enter your phone number"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="address">Address</label>
+                <textarea
+                  class="form-control"
+                  id="address"
+                  rows="3"
+                  placeholder="Enter your address"
+                  required
+                ></textarea>
+              </div>
+              <div class="form-group">
+                <label for="connectionType">Connection Type</label>
+                <select class="form-control" id="connectionType" required>
+                  <option value="">Select connection type</option>
+                  <option value="residential">Residential</option>
+                  <option value="commercial">Commercial</option>
+                  <option value="industrial">Industrial</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="meterType">Meter Type</label>
+                <select class="form-control" id="meterType" required>
+                  <option value="">Select meter type</option>
+                  <option value="single_phase">Single Phase</option>
+                  <option value="three_phase">Three Phase</option>
+                </select>
+              </div>
+              <button id="submitbtn" type="submit" class="btn btn-primary btn-block">
+                Submit Application and Pay
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>&copy; 2024 Electricity Bill App. All rights reserved.</p>
+    </footer>
+    <script src="sessioncheck.js"></script>
+    <script src="sessionclose.js"></script>
+    <script>
+      
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("lightConnectionForm");
+
+        form.addEventListener("submit", function (event) {
+          event.preventDefault(); // Prevent the default form submission
+
+          // Collect form data
+          const formData = {
+            fullName: document.getElementById("fullName").value,
+            email: document.getElementById("email").value,
+            phone: document.getElementById("phone").value,
+            address: document.getElementById("address").value,
+            connectionType: document.getElementById("connectionType").value,
+            meterType: document.getElementById("meterType").value,
+          };
+
+          // Store form data in local storage
+          localStorage.setItem(
+            "lightConnectionFormData",
+            JSON.stringify(formData)
+          );
+
+          // Optional: display a success message or redirect to another page
+          alert("Application submitted successfully!");
+        });
+      });
+    </script>
+  </body>
+</html>

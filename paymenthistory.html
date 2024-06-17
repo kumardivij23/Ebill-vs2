@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Electric Bill History</title>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: #f8f9fa;
+        padding-top: 50px;
+        display: none;
+      }
+      .footer {
+        background-color: #343a40;
+        padding: 10px 0;
+        text-align: center;
+        color: white;
+      }
+      .history-container {
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .history-header {
+        margin-bottom: 30px;
+      }
+      .table-container {
+        margin-top: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <img src="/image/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+      <a class="navbar-brand" href="#">Electricity Bill</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="homepage.html">Home</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Payment History</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="feedback.html">Feedback Form</a>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="Paymentpage.html">Payment</a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="newconnection.html">New Connection</a>
+          </li>
+          <li class="nav-item">
+            <button class="btn btn-secondary" title="Logout" id="logoutBtn"><img src="image/logout.png" width="30" height="30" alt="">Logout</button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container mt-3">
+      <div class="row justify-content-center">
+        <div class="col-md-10">
+          <div class="history-container">
+            <h2 class="text-center history-header">
+              Electric Bill Payment History
+            </h2>
+            <div class="table-container">
+              <table id="billHistoryTable" class="table table-striped">
+                <thead>
+                  <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Account Number</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody id="billHistoryTableBody">
+                  <!-- Table rows will be dynamically added here -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="footer mt-0">
+      <p>&copy; 2024 Electricity Bill App. All rights reserved.</p>
+    </footer>
+
+    <script>
+      // Example data (can be replaced with actual dynamic data fetching logic)
+      const billData = [
+        {
+          date: "2023-05-01",
+          accountNumber: "123456789",
+          email: "example@example.com",
+          amount: "$100.00",
+          status: "Paid",
+        },
+        {
+          date: "2023-06-15",
+          accountNumber: "987654321",
+          email: "user@example.com",
+          amount: "$150.00",
+          status: "Paid",
+        },
+        {
+          date: "2023-07-30",
+          accountNumber: "456789123",
+          email: "test@example.com",
+          amount: "$80.00",
+          status: "Pending",
+        },
+        {
+          date: "2023-08-05",
+          accountNumber: "234567891",
+          email: "user2@example.com",
+          amount: "$120.00",
+          status: "Paid",
+        },
+        {
+          date: "2023-09-20",
+          accountNumber: "345678912",
+          email: "example2@example.com",
+          amount: "$200.00",
+          status: "Paid",
+        },
+        {
+          date: "2023-10-25",
+          accountNumber: "456789234",
+          email: "user3@example.com",
+          amount: "$110.00",
+          status: "Pending",
+        },
+        {
+          date: "2023-11-15",
+          accountNumber: "567891234",
+          email: "example3@example.com",
+          amount: "$140.00",
+          status: "Paid",
+        },
+        {
+          date: "2023-12-30",
+          accountNumber: "678912345",
+          email: "user4@example.com",
+          amount: "$95.00",
+          status: "Paid",
+        },
+        {
+          date: "2024-01-20",
+          accountNumber: "789123456",
+          email: "example4@example.com",
+          amount: "$105.00",
+          status: "Paid",
+        },
+        {
+          date: "2024-02-28",
+          accountNumber: "891234567",
+          email: "user5@example.com",
+          amount: "$130.00",
+          status: "Pending",
+        },
+        {
+          date: "2024-03-15",
+          accountNumber: "912345678",
+          email: "example5@example.com",
+          amount: "$115.00",
+          status: "Paid",
+        },
+        {
+          date: "2024-04-10",
+          accountNumber: "123456780",
+          email: "user6@example.com",
+          amount: "$125.00",
+          status: "Paid",
+        },
+      ];
+
+      // Function to dynamically populate the table with data
+      function populateBillTable() {
+        const tableBody = document.getElementById("billHistoryTableBody");
+
+        // Clear any existing rows
+        tableBody.innerHTML = "";
+
+        // Loop through the billData array and create rows
+        billData.forEach((bill) => {
+          const row = `
+          <tr>
+            <td>${bill.date}</td>
+            <td>${bill.accountNumber}</td>
+            <td>${bill.email}</td>
+            <td>${bill.amount}</td>
+            <td>${bill.status}</td>
+          </tr>
+        `;
+          tableBody.innerHTML += row;
+        });
+      }
+
+      // Call the function to populate the table on page load
+      window.onload = populateBillTable;
+    </script>
+    <script src="sessioncheck.js"></script>
+    <script src="sessionclose.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  </body>
+</html>
